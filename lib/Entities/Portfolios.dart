@@ -6,7 +6,7 @@ class SinglePortfolioEntity {
   late double currentPrice;
   late double averagePurchasePrice;
   late double numberOfShares;
-  late String shareType;
+  // late String shareType;
   late int shareTypeInt;
   late double netBenefitInPercent;
   late double netBenefit;
@@ -22,7 +22,7 @@ class SinglePortfolioEntity {
     required this.currentPrice,
     required this.averagePurchasePrice,
     required this.numberOfShares,
-    required this.shareType,
+    // required this.shareType,
     required this.shareTypeInt,
     required this.netBenefitInPercent,
     required this.netBenefit,
@@ -32,16 +32,16 @@ class SinglePortfolioEntity {
   });
 
   SinglePortfolioEntity.fromJSON(Map<String, dynamic> json) {
-    portfolioId = json['portfolio_id'];
+    portfolioId = json['id'];
     marketId = json['market_id'];
     marketTitle = json['market_title'];
     marketImage = json['market_image'];
     currentProbability = json['probability_of_share_type'];
     currentPrice = json['current_price'];
     averagePurchasePrice = json['average_purchase_price'];
-    numberOfShares = json['number_of_shares'];
-    shareType = json['share_type'];
-    shareTypeInt = json['share_type_int'];
+    numberOfShares = json['num_shares'];
+    // shareType = json['share_type'];
+    shareTypeInt = json['position_index'];
     maxFutureResolveValuePerShare = json['max_future_resolve_value_per_share'];
     minFutureResolveValuePerShare = json['min_future_resolve_value_per_share'];
 
@@ -136,7 +136,7 @@ SinglePortfolioEntity getSinglePortfolioTest() {
     currentPrice: 12345,
     averagePurchasePrice: 12345,
     numberOfShares: 12345,
-    shareType: 'positive',
+    // shareType: 'positive',
     shareTypeInt: 0,
     netBenefit: -12234,
     netBenefitInPercent: -12.3,

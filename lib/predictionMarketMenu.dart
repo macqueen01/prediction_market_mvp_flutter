@@ -17,85 +17,107 @@ class PredictionMarketTile extends StatefulWidget {
   State<PredictionMarketTile> createState() => _PredictionMarketTileState();
 }
 
-class _PredictionMarketTileState extends State<PredictionMarketTile> {
+class _PredictionMarketTileState extends State<PredictionMarketTile>
+    with TickerProviderStateMixin {
+  Duration _duration = const Duration(milliseconds: 500);
+  late AnimationController _animationController =
+      AnimationController(vsync: this, duration: _duration);
+
+  late Animation<double> opacityAnimation;
+
+  @override
+  void initState() {
+    super.initState();
+
+    opacityAnimation = Tween<double>(begin: 0, end: 1).animate(
+        CurvedAnimation(parent: _animationController, curve: Curves.easeIn));
+    opacityAnimation.addListener(() {
+      setState(() {});
+    });
+    _animationController.forward();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: 350,
-      height: 240,
-      alignment: Alignment.center,
-      decoration: ShapeDecoration(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(25),
-        ),
-        color: CupertinoColors.systemGrey6,
-      ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(top: 15.0),
-            child: PredictionMarketMenuItemHeader(
-                marketMenu: widget.marketMenu,
-                poolState: widget.marketMenu.poolState!),
+    return Opacity(
+      opacity: this.opacityAnimation.value,
+      child: Container(
+        width: 350,
+        height: 240,
+        alignment: Alignment.center,
+        decoration: ShapeDecoration(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(25),
           ),
-          Container(
-              width: 330,
-              height: 65,
-              alignment: Alignment.center,
-              child: Column(
-                children: [
-                  const Padding(
-                    padding: EdgeInsets.only(
-                        left: 20.0, right: 20.0, bottom: 5, top: 10),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          "그럴 것이다",
-                          style: TextStyle(
-                            decoration: TextDecoration.none,
-                            fontFamily: 'NotoSansCJKr',
-                            fontSize: 11,
-                            fontWeight: FontWeight.w500,
-                            color: Color.fromARGB(255, 63, 63, 63),
-                          ),
-                        ),
-                        Text(
-                          "아닐 것이다",
-                          style: TextStyle(
-                            decoration: TextDecoration.none,
-                            fontFamily: 'NotoSansCJKr',
-                            fontSize: 11,
-                            fontWeight: FontWeight.w500,
-                            color: Color.fromARGB(255, 63, 63, 63),
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                  PercentBar(
-                      height: 30,
-                      width: 300,
-                      positiveProbability:
-                          widget.marketMenu.poolState!.positiveProbability,
-                      negativeProbability:
-                          widget.marketMenu.poolState!.negativeProbability,
-                      cornerRadius: 10)
-                ],
-              )),
-          Container(
-            width: 280,
-            height: 40,
-            alignment: Alignment.bottomCenter,
-            child: const Icon(
-              CupertinoIcons.chevron_compact_down,
-              size: 40,
-              color: CupertinoColors.systemGrey3,
+          color: CupertinoColors.systemGrey6,
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(top: 15.0),
+              child: PredictionMarketMenuItemHeader(
+                  marketMenu: widget.marketMenu,
+                  poolState: widget.marketMenu.poolState!),
             ),
-          )
-        ],
+            Container(
+                width: 330,
+                height: 65,
+                alignment: Alignment.center,
+                child: Column(
+                  children: [
+                    const Padding(
+                      padding: EdgeInsets.only(
+                          left: 20.0, right: 20.0, bottom: 5, top: 10),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            "그럴 것이다",
+                            style: TextStyle(
+                              decoration: TextDecoration.none,
+                              fontFamily: 'NotoSansCJKr',
+                              fontSize: 11,
+                              fontWeight: FontWeight.w500,
+                              color: Color.fromARGB(255, 63, 63, 63),
+                            ),
+                          ),
+                          Text(
+                            "아닐 것이다",
+                            style: TextStyle(
+                              decoration: TextDecoration.none,
+                              fontFamily: 'NotoSansCJKr',
+                              fontSize: 11,
+                              fontWeight: FontWeight.w500,
+                              color: Color.fromARGB(255, 63, 63, 63),
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                    PercentBar(
+                        height: 30,
+                        width: 300,
+                        positiveProbability:
+                            widget.marketMenu.poolState!.positiveProbability,
+                        negativeProbability:
+                            widget.marketMenu.poolState!.negativeProbability,
+                        cornerRadius: 10)
+                  ],
+                )),
+            Container(
+              width: 280,
+              height: 40,
+              alignment: Alignment.bottomCenter,
+              child: const Icon(
+                CupertinoIcons.chevron_compact_down,
+                size: 40,
+                color: CupertinoColors.systemGrey3,
+              ),
+            )
+          ],
+        ),
       ),
     );
   }
@@ -208,8 +230,7 @@ class PredictionMarketMenuItemHeader extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  MarketImageHolder(
-                      image: marketMenu.image, is_new: false),
+                  MarketImageHolder(image: marketMenu.image, is_new: false),
                   Container(
                     width: 220,
                     height: 60,
@@ -220,7 +241,7 @@ class PredictionMarketMenuItemHeader extends StatelessWidget {
                         decoration: TextDecoration.none,
                         fontFamily: 'NotoSansCJKr',
                         fontSize: 14,
-                        fontWeight: FontWeight.w500,
+                        fontWeight: FontWeight.w600,
                         color: Color(0xFF000000),
                       ),
                     ),
@@ -240,8 +261,7 @@ class PredictionMarketMenuItemHeader extends StatelessWidget {
                       height: 40,
                       alignment: Alignment.center,
                       child: PercentChangeIndicator1(
-                        changeRate:
-                            poolState.recentPositiveProbabilityChange,
+                        changeRate: poolState.recentPositiveProbabilityChange,
                         has_increased: (poolState
                             .recentPositiveProbabilityChange
                             .isGreaterThan(0)),
@@ -253,10 +273,7 @@ class PredictionMarketMenuItemHeader extends StatelessWidget {
                         width: 220,
                         height: 15,
                         child: Text(
-                          '예측 시작일: ${marketMenu
-                                  .startTime
-                                  .toString()
-                                  .split(' ')[0]}',
+                          '예측 시작일: ${marketMenu.startTime.toString().split(' ')[0]}',
                           style: const TextStyle(
                             decoration: TextDecoration.none,
                             fontFamily: 'NotoSansCJKr',
@@ -364,7 +381,8 @@ class PercentChangeIndicator2 extends StatelessWidget {
       height: 32,
       alignment: Alignment.center,
       decoration: ShapeDecoration(
-        color: (has_increased) ? const Color(0xFF84F241) : const Color(0xFFE02020),
+        color:
+            (has_increased) ? const Color(0xFF84F241) : const Color(0xFFE02020),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(8),
         ),
@@ -460,7 +478,7 @@ class MarketImageHolder extends StatelessWidget {
               decoration: ShapeDecoration(
                 image: DecorationImage(
                   image: NetworkImage(image),
-                  fit: BoxFit.fill,
+                  fit: BoxFit.cover,
                 ),
                 shape: RoundedRectangleBorder(
                   side: const BorderSide(width: 2, color: Colors.white),
